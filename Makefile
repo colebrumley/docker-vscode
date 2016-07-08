@@ -5,7 +5,7 @@ ICNS_URL = https://github.com/Microsoft/vscode/blob/master/resources/darwin/code
 
 .PHONY: all build tag_latest release app
 
-all: build
+all: build tag_latest app
 
 build:
 	docker build -t $(NAME):$(VERSION) --rm ./
@@ -17,5 +17,5 @@ release: build tag_latest app
 	docker push $(NAME)
 
 app:
-	curl -o "./$(APP_NAME).app/Contents/Resources/appIcon.icns" $(ICNS_URL) && \
+	curl -v -o "./$(APP_NAME).app/Contents/Resources/appIcon.icns" $(ICNS_URL) && \
 	cp -f ./start.sh "./$(APP_NAME).app/Contents/Resources/script"
