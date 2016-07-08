@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # REQUIRES: socat xquartz docker
+set -x
 sock_pid_file=~/.socat_x11_sock_proxy
 
 get_ip() {
@@ -14,7 +15,7 @@ new_proxy() {
     trap "/usr/bin/pkill -F $sock_pid_file; /bin/rm -f $sock_pid_file" EXIT
 }
 
-handle_data_dir() {
+handle_cfg_dir() {
     if [[ -d $HOME/.vscode ]]; then
         VOL_MAP="--volume=$HOME/.vscode:/home/code/.vscode"
         return
@@ -24,11 +25,21 @@ handle_data_dir() {
     VOL_MAP="--volume=vscode_data:/home/code/.vscode"
 }
 
+handle_data_dirs() {
+    for d in ${@}; do
+        EXTRA_VOLS="$EXTRA_VOLS --volume=${d}:${d}"
+    done
+}
+
 /usr/bin/osascript -e 'tell application "XQuartz" to activate'
 
 # Set up a socat proxy to the XQuartz socket only if one doesn't exist
 [[ -f $sock_pid_file ]] || new_proxy
 
-handle_data_dir
+handle_cfg_dir
 
-/usr/local/bin/docker run -i --rm -e DISPLAY=$(get_ip):0 $VOL_MAP ${1:-elcolio/vscode}
+handle_data_dirs $@
+
+/usr/local/bin/docker run -i --rm \
+    -e DISPLAY=$(get_ip):0 \
+    $VOL_MAP $EXTRA_VOLS elcolio/vscode
