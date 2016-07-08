@@ -26,6 +26,7 @@ handle_cfg_dir() {
 }
 
 handle_data_dirs() {
+    # Map everything to the same name in the container
     for d in ${@}; do
         EXTRA_VOLS="$EXTRA_VOLS --volume=${d}:${d}"
     done
