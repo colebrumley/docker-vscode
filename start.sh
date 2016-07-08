@@ -29,4 +29,6 @@ handle_data_dir() {
 # Set up a socat proxy to the XQuartz socket only if one doesn't exist
 [[ -f $sock_pid_file ]] || new_proxy
 
+handle_data_dir
+
 /usr/local/bin/docker run -i --rm -e DISPLAY=$(get_ip):0 $VOL_MAP ${1:-elcolio/vscode}
