@@ -2,7 +2,7 @@
 
 This repo builds a Docker container for [Visual Studio Code](https://github.com/Microsoft/vscode), which can be used on OSX and Linux. Linux usage is more straightforward and covered elsewhere on the internet so I'll skip it here. I've included a wrapper script and app template for OSX to make the containerized version behave more like a native app.
 
-After building, you can copy `Containerized VSCode.app` into `/Applications` or `~/Applications` as desired. Then as long as Docker is running you can launch VSCode instances at will.
+After building, you can copy `Containerized VSCode.app` into `/Applications`, or just start VSCode with `start.sh` directly. Then as long as Docker is running you can launch VSCode instances at will.
 
 #### *A note about the X11 socket on OSX*
 Despite my ~~best~~ efforts I could not get a container to use the XQuartz X11 socket directly, even using `--privileged`. Instead, `socat` is proxying the socket over the default NIC. Since it's a local to local connection it shouldn't introduce latency or performance issues, but it *does* mean that port 6000 needs to be available on your mac and that there will be an unauthenticated connection to X11 available.
