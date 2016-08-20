@@ -1,8 +1,8 @@
 #!/bin/bash -x
-[[ -d ${HOME}/.vscode ]] && VSC_USER_DIR="-v ${HOME}/.vscode:/home/code/.vscode"
-
 HERE=$(pwd)
-VOLUME_STRING="--volume=$HERE:$HERE "
+[[ -d ${HOME}/.vscode ]] && VOLUME_STRING="--volume=${HOME}/.vscode:/home/code/.vscode "
+[[ -f ${HOME}/.gitconfig ]] && VOLUME_STRING="${VOLUME_STRING}--volume=${HOME}/.gitconfig:/home/code/.gitconfig "
+VOLUME_STRING="${VOLUME_STRING}--volume=$HERE:$HERE "
 
 for f in ${@}; do
     flink=$(readlink -f $f)
@@ -17,9 +17,8 @@ for f in ${@}; do
 done
 
 docker run --rm \
-    --workdir $HERE \
-    -e DISPLAY \
-    -v /tmp:/tmp \
-    $VSC_USER_DIR \
+    --workdir=$HERE \
+    --env=DISPLAY \
+    --volume=/tmp:/tmp \
     $VOLUME_STRING \
     elcolio/vscode $@ &
