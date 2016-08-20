@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 HERE=$(pwd)
 [[ -d ${HOME}/.vscode ]] && VOLUME_STRING="--volume=${HOME}/.vscode:/home/code/.vscode "
 [[ -f ${HOME}/.gitconfig ]] && VOLUME_STRING="${VOLUME_STRING}--volume=${HOME}/.gitconfig:/home/code/.gitconfig "
@@ -15,7 +15,7 @@ for f in ${@}; do
         VOLUME_STRING="${VOLUME_STRING}--volume=$flink:$flink "
     fi
 done
-
+set -x
 docker run --rm \
     --workdir=$HERE \
     --env=DISPLAY \
