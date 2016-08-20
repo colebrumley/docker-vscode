@@ -14,3 +14,7 @@ tag_latest:
 
 release: build tag_latest app
 	docker push $(NAME)
+
+install:
+	test -f /usr/bin/code || cp wrapper /usr/bin/code
+	chmod a+x /usr/bin/code

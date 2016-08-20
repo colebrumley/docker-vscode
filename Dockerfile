@@ -27,4 +27,6 @@ RUN         wget -O /tmp/vsc.deb $VSC_DL_URL && \
 
 USER        code
 WORKDIR     $HOME
+VOLUME 	    $HOME/.vscode
+VOLUME 	    $HOME/.config/Code
 ENTRYPOINT  ["/usr/bin/code","--wait","--verbose"]
